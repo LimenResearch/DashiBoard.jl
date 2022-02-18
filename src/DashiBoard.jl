@@ -1,4 +1,4 @@
-module DataVisualization
+module DashiBoard
 
 using Observables
 using Observables: to_value, AbstractObservable
@@ -126,7 +126,7 @@ function julia_main()::Cint
     visualizationtabs = (:Spreadsheet, :Chart, :Pipelines)
 
     # launch server
-    server = DataVisualization.serve(df; pipelinetabs, visualizationtabs,
+    server = DashiBoard.serve(df; pipelinetabs, visualizationtabs,
         url=Sockets.localhost, port=9000, verbose=true)
 
     # prevent the app from closing once the server has been launched

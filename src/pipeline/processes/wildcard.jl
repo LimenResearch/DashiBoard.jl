@@ -44,7 +44,7 @@ function (wc::Wildcard)(data)
 
     private_module = Module()
     for m in map(Symbol, WILDCARD_MODULES)
-        @eval private_module using DataVisualization.($m)
+        @eval private_module using DashiBoard.($m)
     end
     for input in inputs
         @eval private_module $input = $(Tables.getcolumn(data, input))

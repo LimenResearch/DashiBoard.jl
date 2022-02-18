@@ -1,4 +1,4 @@
-using Documenter, DataVisualization
+using Documenter, DashiBoard
 
 let dir = joinpath(@__DIR__, "src", "tabs")
     for fn in readdir(joinpath(dir, "src"))
@@ -18,9 +18,9 @@ let dir = joinpath(@__DIR__, "src", "tabs")
 end
 
 makedocs(;
-    modules=[DataVisualization],
-    authors="Pietro Vertechi <pietro.vertechi@veos.digital>",
-    repo="https://github.com/Veos-Digital/DataVisualization.jl/blob/{commit}{path}#{line}",
+    modules=[DashiBoard],
+    authors="Pietro Vertechi <pietro.vertechi@protonmail.com>",
+    repo="https://github.com/piever/DashiBoard.jl/blob/{commit}{path}#{line}",
     sitename="Data Visualization",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
@@ -46,7 +46,7 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/Veos-Digital/DataVisualization.jl",
+    repo="github.com/piever/DashiBoard.jl",
     push_preview=true,
     devbranch="main",
 )

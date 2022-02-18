@@ -2,6 +2,6 @@
 
 ```@docs
 UI
-DataVisualization.app
-DataVisualization.serve
+DashiBoard.app
+DashiBoard.serve
 ```

@@ -1,4 +1,4 @@
-using DataVisualization
+using DashiBoard
 using Test
 
 include("preprocessing.jl")

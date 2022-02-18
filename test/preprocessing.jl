@@ -1,6 +1,6 @@
-using DataVisualization: log_scaler, logistic_scaler, standardizer
-using DataVisualization: min_max_scaler, max_abs_scaler
-using DataVisualization: binner, quantile_binner, uniform_binner
+using DashiBoard: log_scaler, logistic_scaler, standardizer
+using DashiBoard: min_max_scaler, max_abs_scaler
+using DashiBoard: binner, quantile_binner, uniform_binner
 
 @testset "Scaler test" begin
     isf = logistic_scaler([1.0])
