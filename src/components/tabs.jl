@@ -32,7 +32,7 @@ function jsrender(session::Session, tabs::Tabs)
 
     contents = map(enumerate(options)) do (i, option)
         display = activetab[] == i ? "block" : "none"
-        content = DOM.div(style="display: $display;", getvalue(option))
+        content = DOM.div(style="display: $display;", class="flex-auto", getvalue(option))
         onjs(
             session,
             activetab,
@@ -47,6 +47,6 @@ function jsrender(session::Session, tabs::Tabs)
     return DOM.div(
         class="flex flex-col h-screen py-8",
         DOM.div(class="flex-initial", headers),
-        DOM.div(class="flex-auto", contents...)
+        contents...
     )
 end

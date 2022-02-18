@@ -17,7 +17,7 @@ function jsrender(session::Session, tabular::Tabular)
     end
     JSServe.register_resource!(session, metadata)
 
-    table_div = DOM.div()
+    table_div = DOM.div(class="h-full")
     create_table = js"""
         function create_table(div, m) {
             const names = m.names;
