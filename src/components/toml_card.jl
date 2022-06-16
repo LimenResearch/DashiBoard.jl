@@ -6,6 +6,7 @@ using GLMakie, GraphMakie
 Base.@kwdef mutable struct MetaGraph
     key_value::Vector{Pair{String, Any}} = []
     kv_graph::Graphs.SimpleGraph{Int} = Graphs.SimpleGraph()
+    key_attributes::Dict{String, Any} = Dict()
 end
 
 function cooccurrence(vector::Any, ref_vec::Any, graph::Graphs.SimpleGraph{Int})
@@ -36,14 +37,18 @@ function star(m::MetaGraph; k::String=nothing, v::Any=nothing)
     @assert any(.!isnothing.([k, v]))
     if all(.!isnothing.([k, v]))
         ind = findfirst(x -> x == (k => v), m.key_value)
+        if isnothing(ind)
+            throw(DomainError("The pair ($k, $v) never occurred."))
+        end
         star_inds = star(m.kv_graph, ind)
     else
         isnothing(k) ? (j, el) = (2, v) : (j, el) = (1, k)
         ind = findfirst(x -> x[j] == el, m.key_value)
         star_inds = star(m.kv_graph, ind)
     end
-    return unique([m.key_value[star_ind][1] for  star_ind in star_inds
+    keys = unique([m.key_value[star_ind][1] for  star_ind in star_inds
                    if m.key_value[star_ind][1] != k])
+    return Dict(k => get(m.key_attributes, k, nothing))
 end
 
 function read_toml_templates(template_folder::AbstractString)
@@ -55,8 +60,15 @@ end
 
 # folder = "./static/neuralnet_templates"
 # templates = read_toml_templates(folder)
+using DlWrappers
+const layers = DlWrappers.layer_to_constructor
+const sigmas = DlWrappers.string_to_sigma
 
 m = MetaGraph()
+m.key_attributes = Dict(
+    "f" => collect(keys(layers)),
+    "sigma" => collect(keys(sigmas))
+)
 main = [
         Dict("f" => "conv", "out"=>10, "filter"=>[5,5], "sigma"=>"relu"),
         Dict("f" => "conv", "out"=>3, "filter"=>[5,5], "sigma"=>"relu"),
