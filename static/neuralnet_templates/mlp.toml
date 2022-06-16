@@ -1,0 +1,23 @@
+[training]
+    num_epochs = 100
+    is_supervised = true
+    batch_size = 32
+
+[optimizer]
+    name = "SGD"
+    params = {lr = 0.01}
+
+[loss]
+    name = "logitcrossentropy"
+    params = {dims = 1, agg = "mean"}
+
+[architecture]
+    name = "mlp_classifier_test"
+    input_size = [50]
+    num_classes = 10
+
+[modules] 
+    main = [
+        {f = "dense", out=100, sigma="identity"},
+        {f = "dense", out=10, sigma="relu"}
+    ]

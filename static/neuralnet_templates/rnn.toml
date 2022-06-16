@@ -1,0 +1,25 @@
+[training]
+    num_epochs = 100
+    is_supervised = true
+    batch_size = 32
+
+[optimizer]
+    name = "ADAM"
+    params = {lr = 0.01}
+
+[loss]
+    name = "logitcrossentropy"
+    params = {dims = 1, agg = "mean"}
+
+[architecture]
+    name = "lstm_classifier_test"
+    input_size = [50]
+    num_classes = 10
+
+
+[modules] 
+    main = [
+        {f = "rnn", out=10, sigma="tanh"},
+        {f = "lstm", out=3},
+        {f = "gru", out=10}
+        ]

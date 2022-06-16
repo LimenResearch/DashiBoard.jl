@@ -1,0 +1,24 @@
+[training]
+    num_epochs = 100
+    is_supervised = true
+    batch_size = 32
+
+[optimizer]
+    name = "ADAM"
+    params = {lr = 0.001}
+
+[loss]
+    name = "logitcrossentropy"
+    params = {dims = 1, agg = "mean"}
+
+[architecture]
+    name = "conv_classifier_test"
+    input_size = [28, 28, 1]
+    num_classes = 10
+
+[modules] 
+    main = [
+        {f = "conv", out=10, filter=[5,5], sigma="relu"},
+        {f = "conv", out=3, filter=[5,5], sigma="relu"},
+        {f = "dense", out=10, sigma="relu"}
+    ]
