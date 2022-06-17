@@ -4,12 +4,12 @@ using Observables
 
 
 # This widget is meant to receive as input a vector of fixed size, e.g., filters in conv layers.
-struct IntArrayInput{N} <: AbstractWidget{SVector{N,Int}}
-    value::Observable{SVector{N,Int}}
+struct StaticArrayInput{N, T} <: AbstractWidget{SVector{N,T}}
+    value::Observable{SVector{N,T}}
     attributes::Dict{Symbol, Any}
 
-    function IntArrayInput{N}(value::Vector{Int}; kw...) where {N}
-        new(Observable(SVector{N, Int}(value)), Dict{Symbol, Any}(kw))
+    function StaticArrayInput{N}(value::Vector{T}; kw...) where {N} where T<:Number
+        new{N, typeof(first(value))}(Observable(SVector{N, T}(value)), Dict{Symbol, Any}(kw))
     end
 end
 
