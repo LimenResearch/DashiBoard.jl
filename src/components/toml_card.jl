@@ -3,10 +3,16 @@ using Graphs
 using Combinatorics
 using GLMakie, GraphMakie
 
+const type2wdg = Dict(
+   Vector{Number} => StaticArrayInput,
+   Number => ConstrainedNumInput
+)
+
 Base.@kwdef mutable struct MetaGraph
     key_value::Vector{Pair{String, Any}} = []
     kv_graph::Graphs.SimpleGraph{Int} = Graphs.SimpleGraph()
     key_attributes::Dict{String, Any} = Dict()
+    wdg_dict::Dict{String, Any} = Dict()
 end
 
 function cooccurrence(vector::Any, ref_vec::Any, graph::Graphs.SimpleGraph{Int})
@@ -48,7 +54,24 @@ function star(m::MetaGraph; k::String=nothing, v::Any=nothing)
     end
     keys = unique([m.key_value[star_ind][1] for  star_ind in star_inds
                    if m.key_value[star_ind][1] != k])
-    return Dict(k => get(m.key_attributes, k, nothing))
+    return keys
+end
+
+function get_autocomplete_list(ks::Vector{String})
+    return merge([Dict(k => get(m.key_attributes, k, nothing)) for k in ks]...)
+end
+
+function get_value_type(m::MetaGraph, key::String)
+    return unique([typeof(v) for (k, v) in m.key_value if k==key])
+end
+
+function infer_wdg(m::MetaGraph, k::String)
+    if haskey(m.key_attributes, k)
+        return RichTextField
+    end
+    type_key = [key for key in keys(type2wdg)
+                if get_value_type(m, k)[1] <: key][1]
+    return type2wdg[type_key]
 end
 
 function read_toml_templates(template_folder::AbstractString)
@@ -83,4 +106,8 @@ main = [
 for d in main
     m = cooccurrence(d, m)
 end
+
 star(m; k="f", v="dense")
+ks = star(m; k="f", v="conv")
+get_autocomplete_list(ks)
+infer_wdg(m,"out")
