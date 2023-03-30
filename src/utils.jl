@@ -134,3 +134,5 @@ function scrollable_component(args...; kwargs...)
         kwargs...
     )
 end
+
+register_resource!(session, obs::AbstractObservable) = onjs(session, obs, js"value => {}")

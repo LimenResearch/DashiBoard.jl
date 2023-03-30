@@ -18,16 +18,17 @@ function jsrender(session::Session, tabs::Tabs)
 
     nodes = [DOM.li(
         class="text-blue-800 text-2xl font-semibold rounded mr-4 px-4 py-2 cursor-pointer hover:bg-gray-200",
-        onclick=js"$(activetab).notify($i)",
+        onclick=js"event => $(activetab).notify($i)",
         getkey(option)
     ) for (i, option) in enumerate(options)]
     headers = DOM.ul(class="flex mb-12", nodes)
 
-    onjs(session, activetab, js"""
-        function (idx) {
-            $(UtilitiesJS).then(U => U.styleSelected($(nodes), idx - 1, $activeClasses, $inactiveClasses));
-        }
-    """)
+    # FIXME: why does it fail?
+    # onjs(session, activetab, js"""
+    #     function (idx) {
+    #         $(UtilitiesJS).then(U => U.styleSelected($(nodes), idx - 1, $activeClasses, $inactiveClasses));
+    #     }
+    # """)
     activetab[] = activetab[]
 
     contents = map(enumerate(options)) do (i, option)

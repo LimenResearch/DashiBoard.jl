@@ -8,7 +8,7 @@ function jsrender(session::Session, togglers::Togglers)
         selected = entry.selected
         isoriginal = entry.value.isoriginal
         reset = Observable(true)
-        JSServe.register_resource!(session, reset)
+        register_resource!(session, reset)
         on(session, reset) do _
             reset!(entry.value)
         end
@@ -16,7 +16,7 @@ function jsrender(session::Session, togglers::Togglers)
             class="float-right p-4 inline-block hover:text-red-300",
             "⬤",
             style=isoriginal[] ? "display:none" : "display:inline",
-            onclick=string(js"$(reset).notify(true)")
+            onclick=js"event => $(reset).notify(true)"
         )
         onjs(session, isoriginal, js"""
             function (val) {

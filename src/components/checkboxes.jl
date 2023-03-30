@@ -26,14 +26,13 @@ end
 function jsrender(session::Session, wdg::Checkboxes)
     list = map(wdg.options) do option
         k, v, s = option.key, option.value, option.selected
-        update = js"($s).notify(this.checked)"
         return DOM.label(
             DOM.input(
                 class="form-checkbox",
                 type="checkbox",
                 checked=s,
                 value=v,
-                onclick=update,
+                onclick=js"event => ($s).notify(event.target.checked)",
             ),
             DOM.span(class="ml-2", k),
             class="inline-flex items-center"

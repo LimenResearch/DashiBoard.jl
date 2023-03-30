@@ -148,7 +148,7 @@ function jsrender(session::Session, card::ProcessingCard)
         DOM.span(
             "✕",
             class="text-red-800 hover:text-red-900 text-2xl font-semibold float-right cursor-pointer",
-            onclick=js"$(card.destroy).notify(true)"
+            onclick=js"event => $(card.destroy).notify(true)"
         ),
         statetracker,
         autocompletes(card)...,

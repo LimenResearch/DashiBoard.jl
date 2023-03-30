@@ -75,10 +75,12 @@ function style_options(names)
 end
 
 function specs_options(session::Session, specs::PlotSpecs; name)
-    return map(session, specs.names; result=Observable{AutocompleteOptions}()) do names
+    result = Observable{AutocompleteOptions}()
+    map!(session, result, specs.names) do names
         options = name == :layers ? [layers_options(); style_options(names)] : style_options(names)
         return to_autocomplete_options(options)
     end
+    return result
 end
 
 struct Chart <: AbstractVisualization

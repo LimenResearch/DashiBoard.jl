@@ -15,7 +15,7 @@ function jsrender(session::Session, tabular::Tabular)
         columns = [map(render_row_value, Tables.getcolumn(cols, name)) for name in names]
         (; names, columns)
     end
-    JSServe.register_resource!(session, metadata)
+    register_resource!(session, metadata)
 
     table_div = DOM.div(class="h-full")
     create_table = js"""
@@ -59,7 +59,7 @@ function jsrender(session::Session, tabular::Tabular)
                 suppressFieldDotNotation: true,
             };
 
-            new $(agGrid).Grid(div, gridOptions);
+            $(agGridJS).then(G => new G.Grid(div, gridOptions));
         }
     """
     onload(session, table_div, js"div => ($create_table)(div, $(metadata).value)")

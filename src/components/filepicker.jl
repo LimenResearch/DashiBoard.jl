@@ -6,15 +6,16 @@ function jsrender(session::Session, fp::FilePicker)
     text = Observable{String}("no files selected")
     input = DOM.input(
         type="file",
-        onchange=js"""
-            $(UtilitiesJS).then(U => U.readFiles(this.files, $(fp.files)));
-            const text = [...this.files].map(file => file.name).join(' ');
+        onchange=js"""event => {
+            $(UtilitiesJS).then(U => U.readFiles(event.target.files, $(fp.files)));
+            const text = [...event.target.files].map(file => file.name).join(' ');
             text && $(text).notify(text);
+        }
         """,
         multiple=true,
         style="display:none;",
     )
-    trigger = js"$(input).click()"
+    trigger = js"event => $(input).click()"
     btn = DOM.button(
         class="text-blue-800 text-xl font-semibold rounded mr-4 p-4 text-left w-full font-semibold hover:bg-gray-200 focus:outline-none",
         onclick=trigger,
