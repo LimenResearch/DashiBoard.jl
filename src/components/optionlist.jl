@@ -51,7 +51,7 @@ function jsrender(session::Session, l::List)
                     node.tabIndex = -1;
                     node.style.display = "block";
                     node.onclick = function (event) {
-                        JSServe.update_obs($(l.value), event.target.dataset.value);
+                        $(l.value).notify(event.target.dataset.value);
                     };
                     node.classList.add(...classes);
                     list.appendChild(node);
@@ -60,35 +60,35 @@ function jsrender(session::Session, l::List)
                 child.innerText = keys[i];
                 child.dataset.value = values[i];
             }
-            JSServe.update_obs($(selected), null);
+            $(selected).notify(null);
         }
     """)
 
     # Add behavior when user presses key
     onjs(session, l.keydown, js"""
         function(key) {
-            const selected = JSServe.get_observable($(selected));
+            const selected = $(selected).value;
             const children = $(list).children;
             const len = children.length;
             if (key == "ArrowDown") {
-                JSServe.update_obs($(selected), $(UtilitiesJS).cycle(selected, len, 1))
+                $(selected).notify($(UtilitiesJS).then(U => U.cycle(selected, len, 1)))
             } else if (key == "ArrowUp") {
-                JSServe.update_obs($(selected), $(UtilitiesJS).cycle(selected, len, -1))
+                $(selected).notify($(UtilitiesJS).then(U => U.cycle(selected, len, -1)))
             } else if (key == "Enter" || key == "Tab") {
                 if (selected !== null && len > 0) {
                     const child = children[selected];
-                    JSServe.update_obs($(l.value), child.dataset.value);
+                    $(l.value).notify(child.dataset.value);
                 }
             }
         }
     """)
 
     # Style selected options
-    onjs(session, selected, js"idx => $(UtilitiesJS).styleSelected($(list).children, idx, $activeClasses, $inactiveClasses)")
+    onjs(session, selected, js"idx => $(UtilitiesJS).then(U => U.styleSelected($(list).children, idx, $activeClasses, $inactiveClasses))")
     # When out of focus, unselect
-    onjs(session, hidden, js"hidden => hidden && JSServe.update_obs($(selected), null)")
+    onjs(session, hidden, js"hidden => hidden && $(selected).notify(null)")
 
-    notify!(l.entries)
+    notify(l.entries)
 
     ui = DOM.div(list; style="position: relative; z-index: 1;", hidden)
     return jsrender(session, ui)

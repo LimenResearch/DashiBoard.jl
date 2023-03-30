@@ -18,14 +18,14 @@ function jsrender(session::Session, tabs::Tabs)
 
     nodes = [DOM.li(
         class="text-blue-800 text-2xl font-semibold rounded mr-4 px-4 py-2 cursor-pointer hover:bg-gray-200",
-        onclick=js"JSServe.update_obs($activetab, $i)",
+        onclick=js"$(activetab).notify($i)",
         getkey(option)
     ) for (i, option) in enumerate(options)]
     headers = DOM.ul(class="flex mb-12", nodes)
 
     onjs(session, activetab, js"""
         function (idx) {
-            $(UtilitiesJS).styleSelected($(nodes), idx - 1, $activeClasses, $inactiveClasses);
+            $(UtilitiesJS).then(U => U.styleSelected($(nodes), idx - 1, $activeClasses, $inactiveClasses));
         }
     """)
     activetab[] = activetab[]

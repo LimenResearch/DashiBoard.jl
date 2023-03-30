@@ -62,7 +62,7 @@ function jsrender(session::Session, tabular::Tabular)
             new $(agGrid).Grid(div, gridOptions);
         }
     """
-    onload(session, table_div, js"div => ($create_table)(div, JSServe.get_observable($metadata))")
+    onload(session, table_div, js"div => ($create_table)(div, $(metadata).value)")
     onjs(session, metadata, js"""
         function (m) {
             const table_div = $(table_div);

@@ -26,7 +26,7 @@ end
 function jsrender(session::Session, wdg::Checkboxes)
     list = map(wdg.options) do option
         k, v, s = option.key, option.value, option.selected
-        update = js"JSServe.update_obs($s, this.checked)"
+        update = js"($s).notify(this.checked)"
         return DOM.label(
             DOM.input(
                 class="form-checkbox",

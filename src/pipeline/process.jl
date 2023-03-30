@@ -62,7 +62,7 @@ end
 function jsrender(session::Session, process::Process)
     ui = scrollable_component(
         process.list;
-        onmousedown=js"$(UtilitiesJS).updateSelection(this, event, $(process.list.selected));"
+        onmousedown=js"$(UtilitiesJS).then(U => U.updateSelection(this, event, $(process.list.selected)));"
     )
     return jsrender(session, ui)
 end

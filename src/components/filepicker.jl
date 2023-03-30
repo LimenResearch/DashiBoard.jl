@@ -7,9 +7,9 @@ function jsrender(session::Session, fp::FilePicker)
     input = DOM.input(
         type="file",
         onchange=js"""
-            $(UtilitiesJS).readFiles(this.files, $(fp.files));
+            $(UtilitiesJS).then(U => U.readFiles(this.files, $(fp.files)));
             const text = [...this.files].map(file => file.name).join(' ');
-            text && JSServe.update_obs($(text), text);
+            text && $(text).notify(text);
         """,
         multiple=true,
         style="display:none;",

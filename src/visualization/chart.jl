@@ -101,7 +101,7 @@ function on_pixelratio(f, session; once=false)
         f(pr)
         flag = true
     end
-    evaljs(session, js"$(UtilitiesJS).trackPixelRatio($(pixelratio))")
+    evaljs(session, js"$(UtilitiesJS).then(U => U. trackPixelRatio($(pixelratio)))")
     return
 end
 

@@ -31,7 +31,7 @@ function jsrender(session::Session, rg::RangeSelector)
             oninput=js"""
                 var val = parseFloat(this.value);
                 if (!isNaN(val)) {
-                    JSServe.update_obs($obs, val);
+                    $(obs).notify(val);
                 }
             """ |> string
         )
