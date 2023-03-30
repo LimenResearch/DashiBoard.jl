@@ -8,7 +8,7 @@ function jsrender(session::Session, togglers::Togglers)
         selected = entry.selected
         isoriginal = entry.value.isoriginal
         reset = Observable(true)
-        JSServe.register_resource!(session, reset)
+        register_resource!(session, reset)
         on(session, reset) do _
             reset!(entry.value)
         end
@@ -16,7 +16,7 @@ function jsrender(session::Session, togglers::Togglers)
             class="float-right p-4 inline-block hover:text-red-300",
             "⬤",
             style=isoriginal[] ? "display:none" : "display:inline",
-            onclick=string(js"JSServe.update_obs($(reset), true)")
+            onclick=js"event => $(reset).notify(true)"
         )
         onjs(session, isoriginal, js"""
             function (val) {
@@ -29,7 +29,7 @@ function jsrender(session::Session, togglers::Togglers)
             class="text-blue-800 text-xl font-semibold border-b-2 border-gray-200 hover:bg-gray-200 w-full text-left",
             onclick=string(js"""
                 if (!$(modified).isEqualNode(event.target)) {
-                    JSServe.update_obs($selected, !(JSServe.get_observable($selected)))
+                    $selected.notify(!($selected).value)
                 }
             """), # FIXME: report to JSServe that this requires string to work on reload
             DOM.span(class="pl-4 py-4 inline-block", entry.key),

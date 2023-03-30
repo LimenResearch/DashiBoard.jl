@@ -21,19 +21,19 @@ end
 
 function jsrender(session::Session, rg::RangeSelector)
     range = rg.range
-    # FIXME: report to JSServe that passing observable to value does not work
     inputs = map(rg.selected) do obs
         input = DOM.input(
             type="number",
             min=minimum(range),
             max=maximum(range),
             step=step(range),
-            oninput=js"""
+            oninput=js"""event => {
                 var val = parseFloat(this.value);
                 if (!isNaN(val)) {
-                    JSServe.update_obs($obs, val);
+                    $(obs).notify(val);
                 }
-            """ |> string
+            }
+            """
         )
         onload(session, input, js"""
             function (div) {

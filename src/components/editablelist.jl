@@ -10,12 +10,13 @@ end
 function jsrender(session::Session, add::AddNewCard)
     list = JSServe.jsrender(session, add.list)
     hidden, keydown = add.list.hidden, add.list.keydown
-    onfocus = js"JSServe.update_obs($(hidden), false);"
-    onblur=js"""
+    onfocus = js"event => $(hidden).notify(false);"
+    onblur=js"""event => {
         const tgt = event.relatedTarget;
-        tgt && $(list).contains(tgt) || JSServe.update_obs($(hidden), true);
+        tgt && $(list).contains(tgt) || $(hidden).notify(true);
+    }
     """
-    onkeydown = js"event.key == 'Escape' ? this.blur() : JSServe.update_obs($(keydown), event.key)"
+    onkeydown = js"event => event.key == 'Escape' ? event.target.blur() : $(keydown).notify(event.key)"
     box = DOM.button(
         "+";
         class="w-full p-8 cursor-pointer text-left text-blue-800 text-2xl hover:bg-gray-200 hover:text-blue-900",
@@ -23,7 +24,7 @@ function jsrender(session::Session, add::AddNewCard)
         onblur,
         onkeydown
     )
-    onjs(session, add.value, js"function (value) {JSServe.update_obs($(hidden), true);}")
+    onjs(session, add.value, js"function (value) {$(hidden).notify(true);}")
     ui = DOM.div(
         box,
         list,

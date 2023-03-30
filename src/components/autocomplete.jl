@@ -26,36 +26,37 @@ function jsrender(session::Session, wdg::Autocomplete)
     list = jsrender(session, wdg.list)
 
     input = DOM.input(
-        onfocus=js"JSServe.update_obs($(hidden), false)",
-        onblur=js"""
+        onfocus=js"event => $(hidden).notify(false)",
+        onblur=js"""event => {
             const tgt = event.relatedTarget;
             if (tgt && $(list).contains(tgt)) {
-                this.focus();
+                event.target.focus();
             } else {
-                JSServe.update_obs($(hidden), true);
+                $(hidden).notify(true);
             }
+        }
         """,
         class="w-full",
         type="text",
         autocomplete="off",
         spellcheck=false,
         value=wdg.value,
-        oninput=js"JSServe.update_obs($(wdg.value), this.value)",
-        onkeydown=js"event.key == 'Escape' ? this.blur() : JSServe.update_obs($(keydown), event.key)"
+        oninput=js"event => $(wdg.value).notify(event.target.value)",
+        onkeydown=js"event => event.key == 'Escape' ? event.target.blur() : $(keydown).notify(event.key)"
     )
 
     ui = DOM.div(input, list)
 
     onjs(session, wdg.value, js"""
         function (value) {
-            const options = JSServe.get_observable($(wdg.options));
+            const options = $(wdg.options).value;
             const pre = options.map(e => e[0]);
             const post = options.map(e => e[1]);
             const lastSpace = value.lastIndexOf(' ');
             const lastColon = value.lastIndexOf(':');
             const idx = Math.max(lastSpace, lastColon);
             let list
-                if (lastSpace < lastColon) {
+            if (lastSpace < lastColon) {
                 const key = value.slice(lastSpace + 1, lastColon);
                 const extendedKey = value.slice(value.lastIndexOf(' ', lastSpace - 1) + 1, lastColon)
                 const target = post[pre.indexOf(extendedKey)] || post[pre.indexOf(key)]
@@ -69,11 +70,11 @@ function jsrender(session::Session, wdg::Autocomplete)
                 const completion = value.slice(0, idx + 1) + key;
                 return {key, value: completion};
             });
-            JSServe.update_obs($(wdg.list.entries), entries);
+            $(wdg.list.entries).notify(entries);
         }
     """)
 
-    notify!(wdg.value)
+    notify(wdg.value)
 
     return jsrender(session, ui)
 end

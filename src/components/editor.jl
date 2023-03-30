@@ -25,7 +25,7 @@ function jsrender(session::Session, editor::Editor)
             const completers = $(editor.entries).map(function ({meta, words, score}) {
                 return {
                     getCompletions: function (editor, session, pos, prefix, callback) {
-                        let wordList = JSServe.get_observable(words);
+                        let wordList = words.value;
                         callback(null, wordList.map(function(word) {
                             return {
                                 caption: word,
@@ -40,7 +40,7 @@ function jsrender(session::Session, editor::Editor)
             editor.session.setMode("ace/mode/" + language);
             editor.session.on("change", function () {
                 const value = editor.getValue();
-                JSServe.update_obs($(editor.value), value);
+                $(editor.value).notify(value);
             });
             editor.setOptions({
                 enableLiveAutocompletion: true,

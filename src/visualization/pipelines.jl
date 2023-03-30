@@ -41,7 +41,7 @@ function jsrender(session::Session, pipelines::Pipelines)
         xlims!(ax, xlims[1] - 0.25,  xlims[2] + 0.25)
         ylims!(ax, ylims[1] - 0.25,  ylims[2] + 0.25)
     end
-    notify!(g)
+    notify(g)
     graphplot!(ax, g;
         arrow_show=true, arrow_size, 
         edge_width, edge_color,

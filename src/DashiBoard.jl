@@ -37,42 +37,23 @@ export set_aog_theme!, update_theme!
 
 WGLMakie.activate!()
 
-function dependency_path(fn)
-    return if hasmethod(JSServe.Asset, Tuple{RelocatableFolders.Path})
-        @path joinpath(dirname(@__DIR__), "js_dependencies", fn)
-    else
-        joinpath(dirname(@__DIR__), "js_dependencies", fn)
-    end
-end
+dependency_path(fn) = @path joinpath(dirname(@__DIR__), "js_dependencies", fn)
 
 const FormsCSS = JSServe.Asset(dependency_path("forms.min.css"))
 const TailwindCSS = JSServe.Asset(dependency_path("tailwind.min.css"))
 const AllCSS = (TailwindCSS, FormsCSS)
 
-const UtilitiesJS = JSServe.Dependency(
-    :utilities,
-    [dependency_path("utilities.js")]
-)
+UtilitiesJS = JSServe.ES6Module(dependency_path("utilities.js"))
 
-const agGrid = JSServe.Dependency(
-    :agGrid,
-    [
-        dependency_path("ag-grid-community.min.noStyle.js"),
-        dependency_path("ag-grid.css"),
-        dependency_path("ag-grid-custom-theme.css"),
-    ]
-)
+agGridJS = JSServe.ES6Module(dependency_path("ag-grid-community.min.noStyle.js"))
+agGridCSS = JSServe.Asset(dependency_path("ag-grid.css"))
+agGridCustomCSS = JSServe.Asset(dependency_path("ag-grid-custom-theme.css"))
 
-const ace = JSServe.Dependency(
-    :ace,
-    [
-        dependency_path("ace.js"),
-        dependency_path("ext-language_tools.js"),
-        dependency_path("mode-julia.js"),
-    ]
-)
+aceJS = JSServe.ES6Module(dependency_path("ace.js"))
+aceLanguageToolsJS = JSServe.ES6Module(dependency_path("ext-language_tools.js"))
+aceJuliaModeJS = JSServe.ES6Module(dependency_path("mode-julia.js"))
 
-const AllDeps = (UtilitiesJS, agGrid, ace)
+AllDeps = (UtilitiesJS, agGridJS, agGridCSS, aceJS, aceLanguageToolsJS, aceJuliaModeJS)
 
 abstract type AbstractPipeline end
 abstract type AbstractVisualization end
