@@ -2,13 +2,15 @@ struct Togglers
     options::Vector{Option}
 end
 
+# FIXME: allow observable list as input, to avoid rebuilding...
+
 function jsrender(session::Session, togglers::Togglers)
     options = togglers.options
     toggles = map(options) do entry
         selected = entry.selected
         isoriginal = entry.value.isoriginal
         reset = Observable(true)
-        register_resource!(session, reset)
+        # register_resource!(session, reset)
         on(session, reset) do _
             reset!(entry.value)
         end
@@ -27,11 +29,12 @@ function jsrender(session::Session, togglers::Togglers)
         content = DOM.div(style="display:none", class="p-4 bg-white rounded-b", jsrender(session, entry.value))
         button = DOM.button(
             class="text-blue-800 text-xl font-semibold border-b-2 border-gray-200 hover:bg-gray-200 w-full text-left",
-            onclick=string(js"""
+            onclick=js"""event => {
                 if (!$(modified).isEqualNode(event.target)) {
                     $selected.notify(!($selected).value)
                 }
-            """), # FIXME: report to JSServe that this requires string to work on reload
+            }
+            """, # FIXME: may need to be a string
             DOM.span(class="pl-4 py-4 inline-block", entry.key),
             modified
         )

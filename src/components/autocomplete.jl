@@ -45,7 +45,7 @@ function jsrender(session::Session, wdg::Autocomplete)
         onkeydown=js"event => event.key == 'Escape' ? event.target.blur() : $(keydown).notify(event.key)"
     )
 
-    ui = DOM.div(input, list)
+    ui = DOM.div(TailwindCSS, input, list)
 
     onjs(session, wdg.value, js"""
         function (value) {
@@ -116,7 +116,7 @@ maybethrow(e::Exception; strict) = strict ? throw(e) : nothing
 function extract_call(rtf::RichTextField; strict=true)
     calls = rtf.parsed
     length(calls) == 1 || maybethrow(ArgumentError("Field $(rtf.name) must have a unique addend"); strict)
-    return first(calls) 
+    return first(calls)
 end
 
 function extract_positional_argument(rtf::RichTextField; strict=true)

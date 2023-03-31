@@ -2,6 +2,7 @@ module DashiBoard
 
 using Observables
 using Observables: to_value, AbstractObservable
+using Hyperscript
 using JSServe
 using JSServe: evaljs, onjs, onload, Table, Server
 import Tables, CSV
@@ -43,17 +44,17 @@ const FormsCSS = JSServe.Asset(dependency_path("forms.min.css"))
 const TailwindCSS = JSServe.Asset(dependency_path("tailwind.min.css"))
 const AllCSS = (TailwindCSS, FormsCSS)
 
-UtilitiesJS = JSServe.ES6Module(dependency_path("utilities.js"))
+const UtilitiesJS = JSServe.ES6Module(dependency_path("utilities.js"))
 
-agGridJS = JSServe.ES6Module(dependency_path("ag-grid-community.min.noStyle.js"))
-agGridCSS = JSServe.Asset(dependency_path("ag-grid.css"))
-agGridCustomCSS = JSServe.Asset(dependency_path("ag-grid-custom-theme.css"))
+const agGridJS = JSServe.ES6Module(dependency_path("ag-grid-community.min.noStyle.js"))
+const agGridCSS = JSServe.Asset(dependency_path("ag-grid.css"))
+const agGridCustomCSS = JSServe.Asset(dependency_path("ag-grid-custom-theme.css"))
 
-aceJS = JSServe.ES6Module(dependency_path("ace.js"))
-aceLanguageToolsJS = JSServe.ES6Module(dependency_path("ext-language_tools.js"))
-aceJuliaModeJS = JSServe.ES6Module(dependency_path("mode-julia.js"))
+const aceJS = JSServe.ES6Module(dependency_path("ace.js"))
+const aceLanguageToolsJS = JSServe.ES6Module(dependency_path("ext-language_tools.js"))
+const aceJuliaModeJS = JSServe.ES6Module(dependency_path("mode-julia.js"))
 
-AllDeps = (UtilitiesJS, agGridJS, agGridCSS, aceJS, aceLanguageToolsJS, aceJuliaModeJS)
+const AllDeps = (UtilitiesJS, agGridJS, agGridCSS, aceJS, aceLanguageToolsJS, aceJuliaModeJS)
 
 abstract type AbstractPipeline end
 abstract type AbstractVisualization end

@@ -15,7 +15,7 @@ function jsrender(session::Session, tabular::Tabular)
         columns = [map(render_row_value, Tables.getcolumn(cols, name)) for name in names]
         (; names, columns)
     end
-    register_resource!(session, metadata)
+    # register_resource!(session, metadata)
 
     table_div = DOM.div(class="h-full")
     create_table = js"""

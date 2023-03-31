@@ -135,4 +135,5 @@ function scrollable_component(args...; kwargs...)
     )
 end
 
+# FIXME: should be removed
 register_resource!(session, obs::AbstractObservable) = onjs(session, obs, js"value => {}")
