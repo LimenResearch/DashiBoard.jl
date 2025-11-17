@@ -1,7 +1,7 @@
 name = "DashiBoard"
 uuid = "de49ba16-8f50-42c0-953a-2dd264fb1ae7"
-authors = ["Pietro Vertechi <pietro.vertechi@protonmail.com> and contributors"]
 version = "0.1.0"
+authors = ["Pietro Vertechi <pietro.vertechi@protonmail.com> and contributors"]
 
 [deps]
 AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
@@ -28,7 +28,7 @@ Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 
 [compat]
-AlgebraOfGraphics = "0.6"
+AlgebraOfGraphics = "0.6, 0.11"
 CSV = "0.9, 0.10"
 Clustering = "0.14, 0.15"
 Distances = "0.10"
