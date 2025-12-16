@@ -1,7 +1,7 @@
 name = "DashiBoard"
 uuid = "de49ba16-8f50-42c0-953a-2dd264fb1ae7"
-authors = ["Pietro Vertechi <pietro.vertechi@protonmail.com> and contributors"]
 version = "0.1.0"
+authors = ["Pietro Vertechi <pietro.vertechi@protonmail.com> and contributors"]
 
 [deps]
 AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
@@ -47,7 +47,7 @@ StatsBase = "0.33, 0.34"
 StatsModels = "0.6"
 StructArrays = "0.6"
 Tables = "1"
-WGLMakie = "0.4, 0.5, 0.9, 0.11"
+WGLMakie = "0.4, 0.5, 0.9, 0.11, 0.13"
 julia = "1"
 
 [extras]
